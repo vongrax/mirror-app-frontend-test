@@ -1,7 +1,9 @@
+import {FC} from "react";
+import Main from "./pages/Main/Main.tsx";
 import "normalize.css";
 
-function App() {
-  return <h1>Hi dev!</h1>;
+const App: FC = () => {
+    return <Main/>
 }
 
 export default App;
