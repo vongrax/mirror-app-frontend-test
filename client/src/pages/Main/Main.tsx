@@ -1,54 +1,94 @@
 import {FC, useEffect, useState} from "react";
-import {Button, Card, Layout} from "antd";
-import DynamicGrid from "../../components/DynamicGrid/DynamicGrid.tsx";
-import styles from "./styles.module.scss";
+import {Button, Layout, Pagination, Spin} from "antd";
 import {observer} from "mobx-react-lite";
 import settingsStore from "../../store/settings.store.ts";
-import {Grid} from "../../typespaces/interfaces/settings.interface.ts";
+import postsStore from "../../store/posts.store.ts";
+import PostCard from "../../components/PostCard/PostCard.tsx";
+import Loader from "../../components/Loader/Loader.tsx";
+import Sidebar from "../../components/Sidebar/Sidebar.tsx";
+import DynamicGrid from "../../components/DynamicGrid/DynamicGrid.tsx";
+import {Grid, Settings} from "../../typespaces/interfaces/settings.interface.ts";
+import {Navigation} from "../../typespaces/enums/navigation.enum.ts";
+import styles from "./styles.module.scss";
 
 
-const {Sider} = Layout;
+const MAX_POSTS = 100;
 
-const Main: FC = () => {
+const Main: FC = observer(() => {
 
-    const [settings, setSettings] = useState<Grid | null>(null)
+    const [grid, seSetGrid] = useState<Grid | null>(null)
+    const {fetchSettings, settings, settingsLoading} = settingsStore;
+    const {fetchPosts, posts, setPage, page, postsLoading} = postsStore
 
-    const {fetchSettings} = settingsStore;
+    const setResponseSettings = async (response?: Settings) => {
+        if (response) {
+            seSetGrid({
+                rows: response.layout.params[response.layout.current].rows,
+                columns: response.layout.params[response.layout.current].columns
+            })
+            await fetchPosts()
+        }
+    }
+
+    const reload = async () => {
+        const response = await fetchSettings();
+        setPage(1)
+        await setResponseSettings(response)
+    }
+    const loadMore = async () => {
+        setPage(page + 1)
+        await fetchPosts()
+        const settingsRows = settings?.layout.params[settings.layout.current].rows || 0;
+        seSetGrid((prevState) => {
+            return {
+                ...prevState,
+                rows: (prevState?.rows || 0) + settingsRows
+            } as Grid
+        })
+    }
+
+    const onPageChange = async (page: number) => {
+        setPage(page)
+        await fetchPosts()
+    }
 
     useEffect(() => {
-        fetchSettings().then((response) => {
-            if (response) {
-                setSettings({
-                    rows: response.layout.params[response.layout.current].rows,
-                    columns: response.layout.params[response.layout.current].columns
-                })
-            }
+        fetchSettings().then(async (response) => {
+            await setResponseSettings(response)
         })
     }, [])
 
-    const reload = () => {
-        window.location.reload()
-    }
-
     return (
-
-        settings ? <Layout className={styles.layout}>
-            <Sider width="20%" className={styles.sidebar}>
-                <Button block onClick={reload}>Обновить</Button>
-            </Sider>
-            <Layout className={styles.content}>
-                <DynamicGrid grid={{
-                    rows: settings.rows,
-                    columns: settings.columns
-                }}>
-                    <Card title="Карточка 1">Контент 1</Card>
-                    <Card title="Карточка 2">Контент 2</Card>
-                    <Card title="Карточка 3">Контент 3</Card>
-                    <Card title="Карточка 4">Контент 4</Card>
-                </DynamicGrid>
+        grid ?
+            <Layout className={styles.layout}>
+                <Sidebar reload={reload} settings={settings} isLoading={settingsLoading}/>
+                <Layout className={styles.content}>
+                    {postsLoading && <Loader className={styles.loader}/>}
+                    <DynamicGrid grid={grid}>
+                        {posts.map((post) => (
+                            <PostCard key={post.id} post={post} template={settings?.template}/>
+                        ))}
+                    </DynamicGrid>
+                    {settings?.navigation === Navigation.PAGINATION &&
+                        <Pagination
+                            align="center"
+                            current={page}
+                            defaultCurrent={page}
+                            onChange={onPageChange}
+                            total={100}
+                            showSizeChanger={false}
+                            pageSize={grid?.rows * grid?.columns}
+                        />
+                    }
+                    {
+                        (settings?.navigation === Navigation.LOAD_MORE && posts.length < MAX_POSTS) &&
+                        <Button onClick={loadMore}>Загрузить еще</Button>
+                    }
+                </Layout>
             </Layout>
-        </Layout> : null
+            :
+            <Spin size="large" fullscreen/>
     );
-}
+})
 
-export default observer(Main);
+export default Main;
