@@ -7,7 +7,7 @@ interface Props {
     children?: ReactNode;
 }
 
-const DynamicGrid: FC<Props> = ({ grid, children }) => {
+const GridLayout: FC<Props> = ({ grid, children }) => {
     const { columns, rows } = grid;
 
     const containerStyle = {
@@ -22,4 +22,4 @@ const DynamicGrid: FC<Props> = ({ grid, children }) => {
     );
 };
 
-export default DynamicGrid;
+export default GridLayout;

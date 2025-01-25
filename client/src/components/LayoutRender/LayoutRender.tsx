@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import DynamicGrid from "@/components/Layouts/DynamicGrid/DynamicGrid.tsx";
+import GridLayout from "@/components/Layouts/GridLayout/GridLayout.tsx";
 import { Params } from "@/typespaces/interfaces/settings.interface.ts";
 import { CurrentLayout } from "@/typespaces/enums/currentLayout.enum.ts";
 
@@ -13,7 +13,7 @@ const LayoutRender: FC<Props> = ({ currentLayout, params, children }) => {
     switch (currentLayout) {
         case CurrentLayout.GRID:
         case CurrentLayout.MASONRY:
-            return <DynamicGrid grid={params[currentLayout]}>{children}</DynamicGrid>;
+            return <GridLayout grid={params[currentLayout]}>{children}</GridLayout>;
 
         default:
             return (
