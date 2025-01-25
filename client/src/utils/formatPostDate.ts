@@ -1,6 +1,6 @@
-import {getDeclension} from "./getDeclension.ts";
+import { getDeclension } from "./getDeclension.ts";
 
-export const formatPostDate =(postDate: string): string => {
+export const formatPostDate = (postDate: string): string => {
     const now = new Date();
     const post = new Date(postDate);
 
@@ -20,5 +20,4 @@ export const formatPostDate =(postDate: string): string => {
 
         return `${day}/${month}/${year}`;
     }
-}
-
+};

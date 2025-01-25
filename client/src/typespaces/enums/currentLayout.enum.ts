@@ -1,4 +1,4 @@
 export enum CurrentLayout {
-    GRID = 'grid',
-    MASONRY = 'masonry',
+    GRID = "grid",
+    MASONRY = "masonry",
 }

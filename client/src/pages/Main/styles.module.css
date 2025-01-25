@@ -1,0 +1,13 @@
+.layout {
+    overflow: hidden;
+    min-height: 100vh;
+}
+.content {
+    padding: 24px;
+    position: relative;
+    height: max-content;
+}
+
+.loader {
+    background-color: rgba(255, 255, 255, 0.5);
+}

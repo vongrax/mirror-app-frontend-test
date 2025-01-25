@@ -1,4 +1,4 @@
 export enum Navigation {
-    LOAD_MORE = 'load-more',
-    PAGINATION = 'pagination',
+    LOAD_MORE = "load-more",
+    PAGINATION = "pagination",
 }

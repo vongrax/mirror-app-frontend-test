@@ -1,18 +1,17 @@
-import {FC} from "react";
-import {Spin} from "antd";
-import styles from "./styles.module.scss";
+import { FC } from "react";
+import { Spin } from "antd";
+import styles from "./styles.module.css";
 
 interface Props {
-    className?: string
+    className?: string;
 }
 
-const Loader: FC<Props>= ({className}) => {
-
+const Loader: FC<Props> = ({ className }) => {
     return (
         <div className={`${styles.container} ${className}`}>
             <Spin size={"large"} />
         </div>
     );
-}
+};
 
 export default Loader;

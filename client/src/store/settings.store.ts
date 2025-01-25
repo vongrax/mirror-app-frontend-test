@@ -1,7 +1,6 @@
-import {makeAutoObservable, runInAction} from 'mobx';
-import api from "../api/api.ts";
-import {Settings} from "../typespaces/interfaces/settings.interface.ts";
-
+import { makeAutoObservable, runInAction } from "mobx";
+import api from "@/api/api.ts";
+import { Settings } from "@/typespaces/interfaces/settings.interface.ts";
 
 class SettingsStore {
     settings: Settings | null;
@@ -9,20 +8,18 @@ class SettingsStore {
     settingsLoading: boolean;
 
     constructor() {
-        this.settings = null
-
-        this.settingsLoading = false
-
+        this.settings = null;
+        this.settingsLoading = false;
         makeAutoObservable(this);
     }
 
     fetchSettings = async (): Promise<Settings | undefined> => {
         this.settingsLoading = true;
         try {
-            const {data} = await api.get<Settings>('/settings');
+            const { data } = await api.get<Settings>("/settings");
 
             runInAction(() => {
-                this.settings = data
+                this.settings = data;
             });
 
             return data;
@@ -31,7 +28,7 @@ class SettingsStore {
         } finally {
             runInAction(() => {
                 this.settingsLoading = false;
-            })
+            });
         }
     };
 }

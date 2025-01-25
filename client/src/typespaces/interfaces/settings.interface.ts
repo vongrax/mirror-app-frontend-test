@@ -1,24 +1,24 @@
-import {Navigation} from "../enums/navigation.enum.ts";
-import {TemplatePostCard} from "../enums/templatePostCard.enum.ts";
-import {CurrentLayout} from "../enums/currentLayout.enum.ts";
+import { Navigation } from "../enums/navigation.enum.ts";
+import { TemplatePostCard } from "../enums/templatePostCard.enum.ts";
+import { CurrentLayout } from "../enums/currentLayout.enum.ts";
 
 export interface Settings {
-    layout: Layout
-    template: TemplatePostCard
-    navigation: Navigation
+    layout: Layout;
+    template: TemplatePostCard;
+    navigation: Navigation;
 }
 
 export interface Layout {
-    current: CurrentLayout
-    params: Params
+    current: CurrentLayout;
+    params: Params;
 }
 
 export interface Params {
-    grid: Grid
-    masonry: Grid
+    grid: Grid;
+    masonry: Grid;
 }
 
 export interface Grid {
-    columns: number
-    rows: number
+    columns: number;
+    rows: number;
 }

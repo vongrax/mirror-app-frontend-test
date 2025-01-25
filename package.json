@@ -10,7 +10,6 @@
     "postinstall": "npm run prepare"
   },
   "devDependencies": {
-    "concurrently": "^9.1.1",
-    "sass": "^1.83.4"
+    "concurrently": "^9.1.1"
   }
 }

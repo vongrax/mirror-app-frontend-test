@@ -1,4 +1,4 @@
 export enum TemplatePostCard {
-    HOVER = 'hover',
-    CLASSIC = 'classic',
+    HOVER = "hover",
+    CLASSIC = "classic",
 }
